@@ -19,13 +19,16 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain customSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests()
+        httpSecurity.csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/assets/**").permitAll()
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/home").permitAll()
                 .requestMatchers("/holidays/**").permitAll()
                 .requestMatchers("/courses").denyAll()
                 .requestMatchers("/saveMsg").permitAll()
+                .requestMatchers("/contact").permitAll()
                 .requestMatchers("/about").permitAll()
                 .and().formLogin()
                 .and().httpBasic();
