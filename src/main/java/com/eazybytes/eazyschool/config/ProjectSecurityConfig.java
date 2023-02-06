@@ -8,10 +8,25 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ProjectSecurityConfig {
 
+//    @Bean
+//    SecurityFilterChain defaultSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
+////        httpSecurity.authorizeHttpRequests().anyRequest().permitAll()
+//        httpSecurity.authorizeHttpRequests().anyRequest().denyAll()
+//                .and().formLogin()
+//                .and().httpBasic();
+//        return httpSecurity.build();
+//    }
+
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.authorizeHttpRequests().anyRequest().permitAll()
-        httpSecurity.authorizeHttpRequests().anyRequest().denyAll()
+    SecurityFilterChain customSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeHttpRequests()
+                .requestMatchers("/assets/**").permitAll()
+                .requestMatchers("/").permitAll()
+                .requestMatchers("/home").permitAll()
+                .requestMatchers("/holidays/**").permitAll()
+                .requestMatchers("/courses").denyAll()
+                .requestMatchers("/saveMsg").permitAll()
+                .requestMatchers("/about").permitAll()
                 .and().formLogin()
                 .and().httpBasic();
         return httpSecurity.build();
