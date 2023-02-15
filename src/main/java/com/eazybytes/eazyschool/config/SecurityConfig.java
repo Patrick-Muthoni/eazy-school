@@ -9,7 +9,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class ProjectSecurityConfig {
+public class SecurityConfig {
 
 //    @Bean
 //    SecurityFilterChain defaultSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
@@ -22,7 +22,8 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain customSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
+        httpSecurity
+                .csrf().ignoringRequestMatchers("/login").and()
                 .authorizeHttpRequests()
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/home").permitAll()
@@ -33,6 +34,7 @@ public class ProjectSecurityConfig {
                 .requestMatchers("/courses").permitAll()
                 .requestMatchers("/about").permitAll()
                 .requestMatchers("/login").permitAll()
+                .requestMatchers("/logout").permitAll()
                 .requestMatchers("/assets/**").permitAll()
                 .and().formLogin().loginPage("/login")
                 .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll()
