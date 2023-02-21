@@ -1,5 +1,6 @@
 package com.eazybytes.eazyschool.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,9 +24,12 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain customSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().ignoringRequestMatchers("/login").and()
+                .csrf().ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()).and()
                 .authorizeHttpRequests()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .requestMatchers("/dashboard").authenticated()
+                .requestMatchers("/displayMessages").hasRole("ADMIN")
+                .requestMatchers("/closeMsg/**").hasRole("ADMIN")
                 .requestMatchers("/home").permitAll()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/holidays/**").permitAll()
@@ -40,6 +44,9 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll()
                 .and().logout().logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true).permitAll()
                 .and().httpBasic();
+
+        httpSecurity.headers().frameOptions().disable();
+
         return httpSecurity.build();
     }
 
@@ -53,7 +60,7 @@ public class SecurityConfig {
         UserDetails user = User.withDefaultPasswordEncoder()
                 .username("admin")
                 .password("54321")
-                .roles("USER","ADMIN")
+                .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
     }
