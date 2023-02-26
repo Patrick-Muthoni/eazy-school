@@ -24,9 +24,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain customSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()).and()
+                .csrf().ignoringRequestMatchers("/saveMsg").and()
                 .authorizeHttpRequests()
-                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/displayMessages").hasRole("ADMIN")
                 .requestMatchers("/closeMsg/**").hasRole("ADMIN")
@@ -44,8 +43,6 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll()
                 .and().logout().logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true).permitAll()
                 .and().httpBasic();
-
-        httpSecurity.headers().frameOptions().disable();
 
         return httpSecurity.build();
     }

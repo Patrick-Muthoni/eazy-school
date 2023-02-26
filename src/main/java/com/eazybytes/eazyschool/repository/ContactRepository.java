@@ -33,7 +33,7 @@ public class ContactRepository {
     }
 
     public List<Contact> getMessages(String status) {
-        String sql = "SELECT * FROM CONTACT_MSG WHERE STATUS = ?";
+        String sql = "SELECT * FROM contact_msg WHERE status = ?";
         return jdbcTemplate.query(sql, ps -> ps.setString(1, status), new ContactRowMapper());
 
 //        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
