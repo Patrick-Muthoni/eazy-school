@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,8 @@ public class HolidayController {
         }
 
         //no logic, hence absence of service layer
-        List<Holiday> holidays = holidayRepository.findAllHolidays();
+        List<Holiday> holidays = new ArrayList<>();
+        holidayRepository.findAll().forEach(holidays::add);
 
         Holiday.Type[] types = Holiday.Type.values();
         for (Holiday.Type type: types) {

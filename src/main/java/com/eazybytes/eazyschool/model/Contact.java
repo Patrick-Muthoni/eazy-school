@@ -1,18 +1,24 @@
 package com.eazybytes.eazyschool.model;
 
+import jakarta.annotation.Generated;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.GenericGenerators;
 
+@Entity
+@Table(name="contact_msg")
 @Data
 public class Contact extends BaseEntity{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    @Column(name = "contact_id")
     private int contactId;
 
     /*

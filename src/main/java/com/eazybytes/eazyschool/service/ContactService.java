@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -25,14 +26,21 @@ public class ContactService {
         contact.setStatus(EazySchoolConstants.OPEN);
         contact.setCreatedAt(LocalDateTime.now());
         contact.setCreatedBy(EazySchoolConstants.ANONYMOUS);
-        contactRepository.saveContactMsg(contact);
+        contactRepository.save(contact);
     }
 
     public List<Contact> getContactMessages(String status) {
-        return contactRepository.getMessages(status);
+        return contactRepository.findAllByStatus(status);
     }
 
-    public int updateMsg(int contactId, String updatedBy) {
-        return contactRepository.updateMsgStatus(contactId, EazySchoolConstants.CLOSE, updatedBy);
+    public Contact updateMsg(int contactId, String updatedBy) {
+        Optional<Contact> actualContact = contactRepository.findById(contactId);
+        if (actualContact.isPresent()) {
+            Contact contact = actualContact.get();
+            contact.setStatus(EazySchoolConstants.CLOSE);
+            contact.setUpdatedBy(updatedBy);
+            return contactRepository.save(contact);
+        }
+        return null;
     }
 }
