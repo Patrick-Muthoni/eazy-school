@@ -24,7 +24,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain customSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().ignoringRequestMatchers("/saveMsg").and()
+                .csrf().ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers("/public/**").and()
                 .authorizeHttpRequests()
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/displayMessages").hasRole("ADMIN")
@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .requestMatchers("/courses").permitAll()
                 .requestMatchers("/about").permitAll()
                 .requestMatchers("/login").permitAll()
+                .requestMatchers("/public/**").permitAll()
                 .requestMatchers("/logout").permitAll()
                 .requestMatchers("/assets/**").permitAll()
                 .and().formLogin().loginPage("/login")
