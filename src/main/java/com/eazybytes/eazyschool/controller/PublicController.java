@@ -1,6 +1,7 @@
 package com.eazybytes.eazyschool.controller;
 
 import com.eazybytes.eazyschool.model.Person;
+import com.eazybytes.eazyschool.service.PersonService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("public")
 public class PublicController {
 
+    private final PersonService personService;
+
+    public PublicController(PersonService personService) {
+        this.personService = personService;
+    }
+
     @GetMapping("/register")
     public String displayRegisterPage(Model model) {
         model.addAttribute("person", new Person() );
@@ -26,6 +33,11 @@ public class PublicController {
             return "register.html";
         }
 
-        return "redirect:/login?register=true";
+        boolean personCreated = personService.createNewPerson(person);
+        if (personCreated) {
+            return "redirect:/login?register=true";
+        }
+        return "register.html";
+
     }
 }
