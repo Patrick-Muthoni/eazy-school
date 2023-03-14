@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: 'mysql/mysql-server'
+    container_name: eazy-school-mysql-db
+    restart: 'always'
+    expose:
+      - '3306'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: 'eazy-school'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'root'
