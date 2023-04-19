@@ -34,21 +34,24 @@ public class ContactService {
         return contactRepository.findAllByStatus(status);
     }
 
-    public Contact updateMsg(int contactId) {
-        Optional<Contact> actualContact = contactRepository.findById(contactId);
-        if (actualContact.isPresent()) {
-            Contact contact = actualContact.get();
-            contact.setStatus(EazySchoolConstants.CLOSE);
-            return contactRepository.save(contact);
-        }
-        return null;
+    public int updateMsg(int contactId) {
+
+
+        return contactRepository.updateMsgStatus(EazySchoolConstants.CLOSE, contactId);
+//        Optional<Contact> actualContact = contactRepository.findById(contactId);
+//        if (actualContact.isPresent()) {
+//            Contact contact = actualContact.get();
+//            contact.setStatus(EazySchoolConstants.CLOSE);
+//            return contactRepository.save(contact);
+//        }
+//        return null;
     }
 
     public Page<Contact> findMsgsWithOpenStatus(int pageNum, String sortField, String sortDir) {
         int pageSize = 5;
         Pageable pageable = PageRequest.of(pageNum-1, pageSize,
                 sortDir.equals("asc") ? Sort.by(sortField).ascending(): Sort.by(sortField).descending());
-        Page<Contact> msgPage = contactRepository.findByStatus(EazySchoolConstants.OPEN, pageable);
+        Page<Contact> msgPage = contactRepository.findOpenMsgs(EazySchoolConstants.OPEN, pageable);
         return msgPage;
     }
 }

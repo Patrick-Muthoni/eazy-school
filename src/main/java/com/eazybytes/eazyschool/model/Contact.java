@@ -7,12 +7,21 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.GenericGenerators;
 
 @Entity
 @Table(name="contact_msg")
-@Data
+@NamedQueries({
+       @NamedQuery(name = "Contact.findOpenMsgs",
+               query = "select c from Contact c WHERE c.status =: status"),
+        @NamedQuery(name = "Contact.updateMsgStatus",
+                query = "UPDATE Contact c set c.status = ?1 where c.contactId = ?2")
+})
+@Getter
+@Setter
 public class Contact extends BaseEntity{
 
     @Id
