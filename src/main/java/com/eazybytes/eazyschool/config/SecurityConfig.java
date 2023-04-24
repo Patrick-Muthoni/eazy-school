@@ -26,11 +26,13 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain customSecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers("/public/**").and()
+                .csrf().ignoringRequestMatchers("/saveMsg")
+                .ignoringRequestMatchers("/public/**").ignoringRequestMatchers("/api/**").and()
                 .authorizeHttpRequests()
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/displayProfile").authenticated()
                 .requestMatchers("/updateProfile").authenticated()
+                .requestMatchers("/api/**").authenticated()
                 .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/displayMessages/**").hasRole("ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")

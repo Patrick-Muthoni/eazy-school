@@ -1,5 +1,7 @@
 package com.eazybytes.eazyschool.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Generated;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -22,6 +24,7 @@ import org.hibernate.annotations.GenericGenerators;
 })
 @Getter
 @Setter
+@JsonIgnoreProperties(value = {"mobileNum", "email"})
 public class Contact extends BaseEntity{
 
     @Id
@@ -37,6 +40,7 @@ public class Contact extends BaseEntity{
    * */
     @NotBlank(message="Name must not be blank")
     @Size(min=3, message="Name must be at least 3 characters long")
+    @JsonProperty("person_name")
     private String name;
 
     @NotBlank(message="Mobile number must not be blank")
