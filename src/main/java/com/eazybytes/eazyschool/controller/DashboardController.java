@@ -5,6 +5,7 @@ import com.eazybytes.eazyschool.repository.PersonRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +21,12 @@ public class DashboardController {
     @Value("${eazyschool.contact.successMsg}")
     private String message;
 
+    private final Environment environment;
+
     private final PersonRepository personRepository;
 
-    public DashboardController(PersonRepository personRepository) {
+    public DashboardController(Environment environment, PersonRepository personRepository) {
+        this.environment = environment;
         this.personRepository = personRepository;
     }
 
@@ -35,9 +39,14 @@ public class DashboardController {
             model.addAttribute("enrolledClass", person.getEazyClass().getName());
         }
         httpSession.setAttribute("loggedInPerson", person);
+        logMessages();
+        return "dashboard.html";
+    }
+
+    private void logMessages() {
         log.error("defaultPageSize " + defaultPageSize);
         log.error("Successmessage " + message);
-        return "dashboard.html";
+        log.error("Page Size " + environment.getProperty("eazyschool.pageSize"));
     }
 
 }
