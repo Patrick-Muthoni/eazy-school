@@ -19,13 +19,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-@Profile("prod")
-public class EazySchoolUsernamePasswordAuthenticationProvider implements AuthenticationProvider {
+@Profile("!prod")
+public class EazySchoolNonProdUsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public EazySchoolUsernamePasswordAuthenticationProvider(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
+    public EazySchoolNonProdUsernamePasswordAuthenticationProvider(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
     }
